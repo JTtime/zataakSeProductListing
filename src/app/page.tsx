@@ -7,6 +7,7 @@ import Header from './components/Header';
 import FilterSidebar from './components/FilterSidebar';
 import ProductGrid from './components/ProductGrid';
 import ProductListHeader from './components/ProductListHeader';
+import { EcommerceServices } from '@/services/apiServices';
 
 const ProductListPage = () => {
   const [products, setProducts] = useState([]);
@@ -18,10 +19,19 @@ const ProductListPage = () => {
 
   const fetchProducts = async () => {
     setloading(true)
-    const response = await fetch('https://dummyjson.com/products');
-    const data = await response.json();
-    setProducts(data?.products);
-    setloading(false)
+
+    try {
+      const response = await EcommerceServices.getProductsList();
+      if (response?.status === 200) {
+        setProducts(response?.data?.products)
+      }
+    } catch (e) {
+      console.error('Error fetching products List', e)
+    } finally {
+      setloading(false)
+    }
+
+
   };
 
   return (
