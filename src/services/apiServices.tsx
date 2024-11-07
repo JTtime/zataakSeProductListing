@@ -19,7 +19,7 @@ export class EcommerceServices {
         return axios.get(productUrl);       
     };
 
-    public static getPaginatedProductsList = (limit: string, skip: number=10) => {
+    public static getPaginatedProductsList = (limit: number=10, skip: number=0) => {
         let productUrl: string = `${this.baseURL}/products?limit=${limit}&skip=${skip}`;
         return axios.get(productUrl);       
     };

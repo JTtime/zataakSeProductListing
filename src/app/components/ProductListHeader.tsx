@@ -21,7 +21,7 @@ const ProductListHeader = () => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <button onClick={() => setPage(page - 1)} disabled={page <= 1}>Previous</button>
                 <Typography variant="body2" style={{ margin: '0 10px' }}>Page {page}</Typography>
-                <button onClick={() => setPage(page + 1)}>Next</button>
+                <button onClick={() => setPage((prev) => prev + 1)}>Next</button>
             </div>
         </div>
     );
