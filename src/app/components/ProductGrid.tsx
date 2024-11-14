@@ -19,8 +19,8 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
     return (
         <Box sx={{margin: '1rem'}}>
             <Grid container spacing={2}>
-                {products.map((product) => (
-                    <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id} sx={{ display: 'flex' }}>
+                {products?.map((product, index) => (
+                    <Grid key={product.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }} sx={{ display: 'flex' }}>
                         <ProductCard
                             title={product.title}
                             category={product.category}

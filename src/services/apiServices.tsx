@@ -29,7 +29,7 @@ export class EcommerceServices {
         return axios.get(productUrl);
     };
 
-    public static getSortedProductsList = (limit: number = 10, skip: number = 0, order: 'sortBy') => {
+    public static getSortedProductsList = (limit: number = 12, skip: number = 0, order: 'sortBy') => {
         if (order == 'sortBy') {
             this.getPaginatedProductsList(limit, skip)
         }
@@ -37,6 +37,11 @@ export class EcommerceServices {
             let productUrl: string = `${this.baseURL}/products?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`;
             return axios.get(productUrl);
         }
+    };
+
+    public static getProductCategoriesList = () => {
+        let productUrl: string = `${this.baseURL}/products/categories`
+        return axios.get(productUrl);
     };
 
 }  

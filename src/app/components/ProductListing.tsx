@@ -12,13 +12,23 @@ import { EcommerceServices } from '@/services/apiServices';
 const ProductListPage = () => {
 
     const [loading, setloading] = useState<boolean>(false);
-    const { page, products, setProducts, limit, order } = useFilterContext();
+    const { page, setPage, products, setProducts, limit, order, selectedCategories } = useFilterContext();
 
 
     useEffect(() => {
-        fetchProducts();
+        if (selectedCategories.length === 0) {
+            fetchProducts()
+         }
+        
         console.log('products', products)
     }, [page]);
+
+    useEffect(()=>{
+        if (selectedCategories.length===0) {
+            setPage(1)
+        }
+
+    },[selectedCategories])
 
     const fetchProducts = async () => {
         setloading(true)
@@ -26,12 +36,12 @@ const ProductListPage = () => {
         try {
             // const response = await EcommerceServices.getProductsList();
             if (order === "sortBy") {
-                const response = await EcommerceServices.getPaginatedProductsList(limit, page * limit);
+                const response = await EcommerceServices.getPaginatedProductsList(limit, (page-1) * limit);
                 if (response?.status === 200) {
                     setProducts(response?.data?.products)
                 }
             } else {
-                const response = await EcommerceServices.getSortedProductsList(limit, page * limit, order);
+                const response = await EcommerceServices.getSortedProductsList(limit, (page-1) * limit, order);
                 if (response?.status === 200) {
                     setProducts(response?.data?.products)
                 }
