@@ -29,7 +29,7 @@ const FilterContext = createContext<FilterContextProps | undefined>(undefined);
 export const FilterProvider = ({ children }: { children: ReactNode }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 14000]);
   const [availability, setAvailabilityState] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>('Most Popular');
   const [page, setPage] = useState<number>(1);

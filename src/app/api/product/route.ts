@@ -47,7 +47,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     
-    const { selectedCategories, availability, limit = 10, skip = 0 } = await request.json();
+    const { selectedCategories, availability, priceRange, limit = 10, skip = 0 } = await request.json();
 
     
     if (!Array.isArray(selectedCategories)) {
@@ -67,6 +67,11 @@ export async function POST(request: Request) {
     if (availability?.length) {
       query.availabilityStatus =  { $in: availability };
       console.log('query', query)
+    }
+
+    if (priceRange && priceRange.length === 2) {
+      const [minPrice, maxPrice] = priceRange;
+      query.price = { $gte: minPrice, $lte: maxPrice }; 
     }
 
    

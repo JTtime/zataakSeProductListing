@@ -37,6 +37,11 @@ const FilterSidebar = () => {
 
 
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [debouncedPriceRange, setDebouncedPriceRange] = useState<[number, number]>([0, 14000]);
+  
+  // Timer for debouncing
+  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
+
 
   useEffect(() => {
     fetchCategories();
@@ -50,7 +55,7 @@ const FilterSidebar = () => {
   const fetchProductByCategoryList = async () => {
     const skip = (page-1)*limit
     try {
-      const response = await axios.post('/api/product/', { selectedCategories, limit, skip, availability });
+      const response = await axios.post('/api/product/', { selectedCategories, limit, skip, availability,  priceRange: debouncedPriceRange });
       setProducts(response?.data?.products);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -58,10 +63,10 @@ const FilterSidebar = () => {
   }
 
   useEffect(()=>{
-    if (selectedCategories.length || availability.length) {
+    if (selectedCategories.length || availability.length || debouncedPriceRange.length === 2) {
       fetchProductByCategoryList()
     }
-  },[selectedCategories, page, availability])
+  },[selectedCategories, page, availability, debouncedPriceRange])
 
   useEffect(()=>{
 
@@ -180,8 +185,20 @@ const FilterSidebar = () => {
     }
     );
     // fetchProductByCategory(slug);
+  };
 
+  const handleSliderChange = (e: Event, newValue: [number, number]) => {
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout); // Clear the previous timeout if any
+    }
 
+    // Set a new debounce timeout
+    const timeout = setTimeout(() => {
+      setDebouncedPriceRange(newValue); // Update the debounced value after 1000ms
+    }, 1000);
+
+    setDebounceTimeout(timeout); // Store the timeout reference
+    setPriceRange(newValue); // Update the slider value immediately
   };
 
 
@@ -204,10 +221,12 @@ const FilterSidebar = () => {
       <Typography variant="h6" style={{ marginTop: '20px' }}>Price Range</Typography>
       <Slider
         value={priceRange}
-        onChange={(e, newValue) => setPriceRange(newValue as [number, number])}
+        onChange={handleSliderChange}
+        // onChange={(e, newValue) => setPriceRange(newValue as [number, number])}
         valueLabelDisplay="auto"
         min={0}
-        max={500}
+        max={14000}
+        valueLabelFormat={(value) => `$${value}`} 
       />
 
       <Typography variant="h6" style={{ marginTop: '20px' }}>Availability</Typography>
