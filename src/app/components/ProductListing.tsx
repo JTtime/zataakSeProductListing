@@ -21,7 +21,7 @@ const ProductListPage = () => {
          }
         
         console.log('products', products)
-    }, [page]);
+    }, [page, selectedCategories]);
 
     useEffect(()=>{
         if (selectedCategories.length===0) {
