@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFilterContext } from '../../context/FilterContext';
-import { Slider, Checkbox, FormControlLabel, Typography, FormGroup } from '@mui/material';
+import { Slider, Checkbox, FormControlLabel, Typography, FormGroup, Button } from '@mui/material';
 import { EcommerceServices } from '@/services/apiServices';
 import axios from 'axios';
 
@@ -38,7 +38,7 @@ const FilterSidebar = () => {
 
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [debouncedPriceRange, setDebouncedPriceRange] = useState<[number, number]>([0, 14000]);
-  
+
   // Timer for debouncing
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
 
@@ -53,25 +53,25 @@ const FilterSidebar = () => {
   }, [filteredProducts, page])
 
   const fetchProductByCategoryList = async () => {
-    const skip = (page-1)*limit
+    const skip = (page - 1) * limit
     try {
-      const response = await axios.post('/api/product/', { selectedCategories, limit, skip, availability,  priceRange: debouncedPriceRange });
+      const response = await axios.post('/api/product/', { selectedCategories, limit, skip, availability, priceRange: debouncedPriceRange });
       setProducts(response?.data?.products);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (selectedCategories.length || availability.length || debouncedPriceRange.length === 2) {
       fetchProductByCategoryList()
     }
-  },[selectedCategories, page, availability, debouncedPriceRange])
+  }, [selectedCategories, page, availability, debouncedPriceRange])
 
-  useEffect(()=>{
+  useEffect(() => {
 
 
-  },[availability])
+  }, [availability])
 
   const fetchProductsByAvailability = async () => {
 
@@ -201,6 +201,13 @@ const FilterSidebar = () => {
     setPriceRange(newValue); // Update the slider value immediately
   };
 
+  const handleResetSlider = () => {
+    const defaultPriceRange: [number, number] = [0, 14000];
+    setPriceRange(defaultPriceRange); // Reset the slider value
+    setDebouncedPriceRange(defaultPriceRange); // Reset the debounced price range
+    setPage(1); // Optionally reset page to 1
+  };
+
 
   return (
     <div style={{ width: '250px', padding: '1rem', marginTop: '5rem' }}>
@@ -222,12 +229,24 @@ const FilterSidebar = () => {
       <Slider
         value={priceRange}
         onChange={handleSliderChange}
-        // onChange={(e, newValue) => setPriceRange(newValue as [number, number])}
         valueLabelDisplay="auto"
         min={0}
         max={14000}
-        valueLabelFormat={(value) => `$${value}`} 
+        valueLabelFormat={(value) => `$${value}`}
       />
+      <Typography variant="body2" style={{ marginTop: '10px' }}>
+        {`$${priceRange[0]} - $${priceRange[1]}`}
+      </Typography>
+
+      {/* Reset Button for Slider */}
+      <Button
+        variant="outlined"
+        fullWidth
+        onClick={handleResetSlider}
+        style={{ marginTop: '20px' }}
+      >
+        Reset Price Range
+      </Button>
 
       <Typography variant="h6" style={{ marginTop: '20px' }}>Availability</Typography>
       <FormGroup>
