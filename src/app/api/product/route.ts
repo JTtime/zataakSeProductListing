@@ -47,7 +47,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     
-    const { selectedCategories, limit = 10, skip = 0 } = await request.json();
+    const { selectedCategories, availability, limit = 10, skip = 0 } = await request.json();
 
     
     if (!Array.isArray(selectedCategories)) {
@@ -58,12 +58,18 @@ export async function POST(request: Request) {
     }
 
     
-    let query = {};
+    let query: any = {};
 
     if (selectedCategories.length > 0) {
-      
-      query = { "category": { $in: selectedCategories } };
+      query.category = { $in: selectedCategories };
     }
+
+    if (availability?.length) {
+      query.availabilityStatus =  { $in: availability };
+      console.log('query', query)
+    }
+
+   
 
     
     await client.connect();

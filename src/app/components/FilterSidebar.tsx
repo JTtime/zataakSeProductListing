@@ -50,7 +50,7 @@ const FilterSidebar = () => {
   const fetchProductByCategoryList = async () => {
     const skip = (page-1)*limit
     try {
-      const response = await axios.post('/api/product/', { selectedCategories, limit, skip });
+      const response = await axios.post('/api/product/', { selectedCategories, limit, skip, availability });
       setProducts(response?.data?.products);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -58,11 +58,19 @@ const FilterSidebar = () => {
   }
 
   useEffect(()=>{
-    if (selectedCategories.length) {
+    if (selectedCategories.length || availability.length) {
       fetchProductByCategoryList()
     }
+  },[selectedCategories, page, availability])
 
-  },[selectedCategories, page])
+  useEffect(()=>{
+
+
+  },[availability])
+
+  const fetchProductsByAvailability = async () => {
+
+  }
 
   // useEffect(() => {
   //   // filterProducts(filteredProducts);
@@ -204,7 +212,7 @@ const FilterSidebar = () => {
 
       <Typography variant="h6" style={{ marginTop: '20px' }}>Availability</Typography>
       <FormGroup>
-        {['In Stock', 'Out of Stock'].map((status) => (
+        {['In Stock', 'Low Stock', 'Out of Stock'].map((status) => (
           <FormControlLabel
             key={status}
             control={<Checkbox checked={availability.includes(status)} onChange={() => setAvailability(status)} />}
