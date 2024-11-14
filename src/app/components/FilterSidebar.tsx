@@ -238,7 +238,7 @@ const FilterSidebar = () => {
         {`$${priceRange[0]} - $${priceRange[1]}`}
       </Typography>
 
-      {/* Reset Button for Slider */}
+
       <Button
         variant="outlined"
         fullWidth
