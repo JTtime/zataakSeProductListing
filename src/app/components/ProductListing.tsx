@@ -41,6 +41,7 @@ const ProductListPage = () => {
                     setProducts(response?.data?.products)
                 }
             } else {
+                //@ts-ignore
                 const response = await EcommerceServices.getSortedProductsList(limit, (page-1) * limit, order);
                 if (response?.status === 200) {
                     setProducts(response?.data?.products)

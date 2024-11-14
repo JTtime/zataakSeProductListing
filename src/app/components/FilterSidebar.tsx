@@ -8,7 +8,7 @@ interface Product {
   id: number;
   title: string;
   description: string;
-  category: string; // The category this product belongs to
+  category: string;
   price: number;
   discountPercentage: number;
   rating: number;
@@ -103,48 +103,49 @@ const FilterSidebar = () => {
   //   }
   // };
 
-  const fetchProductByCategory = async (category: string) => {
-    try {
-      const response = await EcommerceServices.getProductsListByCategory(category)
+  // const fetchProductByCategory = async (category: string) => {
+  //   try {
+  //     const response = await EcommerceServices.getProductsListByCategory(category)
 
-      switch (selectedCategories?.length) {
-        case 1:
-          // setFilteredProducts(response?.data?.products);
-          setProducts(response?.data?.products)
-          break;
-        case 0:
-          console.log('testing pagination', filteredProducts)
-          const noCategoryResponse = await EcommerceServices.getPaginatedProductsList(limit, 0)
-          if (noCategoryResponse?.status === 200) {
-            setFilteredProducts(noCategoryResponse.data?.products)
-          }
-        default:
-          if ((selectedCategories?.length > 1) && (response?.status === 200)) {
-            console.log('default switch', selectedCategories, response?.status)
-            setProducts(prev => [...response?.data?.products, ...prev]);
-          }
-          break;
-      }
-      // if (selectedCategories?.length === 1) {
-      //   setFilteredProducts(response?.data?.products)
-      // } else if (selectedCategories?.length === 0) {
-      //   console.log('testing pagination')
-      //   const noCategoryResponse = await EcommerceServices.getPaginatedProductsList(limit, 0)
-      //   if (noCategoryResponse?.status === 200) {
-      //     setFilteredProducts(noCategoryResponse.data?.products)
-      //   }
-      // } else if (selectedCategories?.length > 1) {
-      //   setFilteredProducts(prev => [...(response?.data?.products ?? []), ...prev]);
-      // }
+  //     switch (selectedCategories?.length) {
+  //       case 1:
+  //         // setFilteredProducts(response?.data?.products);
+  //         setProducts(response?.data?.products)
+  //         break;
+  //       case 0:
+  //         console.log('testing pagination', filteredProducts)
+  //         const noCategoryResponse = await EcommerceServices.getPaginatedProductsList(limit, 0)
+  //         if (noCategoryResponse?.status === 200) {
+  //           setFilteredProducts(noCategoryResponse.data?.products)
+  //         }
+  //       default:
+  //         if ((selectedCategories?.length > 1) && (response?.status === 200)) {
+  //           console.log('default switch', selectedCategories, response?.status)
+  //           setProducts(prev => [...response?.data?.products, ...prev]);
+  //         }
+  //         break;
+  //     }
+  //     // if (selectedCategories?.length === 1) {
+  //     //   setFilteredProducts(response?.data?.products)
+  //     // } else if (selectedCategories?.length === 0) {
+  //     //   console.log('testing pagination')
+  //     //   const noCategoryResponse = await EcommerceServices.getPaginatedProductsList(limit, 0)
+  //     //   if (noCategoryResponse?.status === 200) {
+  //     //     setFilteredProducts(noCategoryResponse.data?.products)
+  //     //   }
+  //     // } else if (selectedCategories?.length > 1) {
+  //     //   setFilteredProducts(prev => [...(response?.data?.products ?? []), ...prev]);
+  //     // }
 
-    } catch (e) {
-      console.error('error fetching products by category', e)
-    }
-  }
+  //   } catch (e) {
+  //     console.error('error fetching products by category', e)
+  //   }
+  // }
 
   const handleCheckboxChange = (slug: string) => {
     setPage(1)
-    setSelectedCategories((prevCategories) => {
+    // @ts-ignore
+    setSelectedCategories((prevCategories: string[]) => {
       if (prevCategories.includes(slug)) {
         console.log('prev categories', prevCategories)
 
@@ -206,7 +207,8 @@ const FilterSidebar = () => {
       <Typography variant="h6" style={{ marginTop: '20px' }}>Price Range</Typography>
       <Slider
         value={priceRange}
-        onChange={handleSliderChange}
+        //@ts-ignore
+        onChange={(e, value)=>handleSliderChange(e, value)}
         valueLabelDisplay="auto"
         min={0}
         max={14000}

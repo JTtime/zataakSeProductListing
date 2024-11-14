@@ -5,14 +5,30 @@ interface Category {
   name: string;
 }
 
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  stock: number;
+  tags: string[];
+  brand: string;
+  images: string[];
+}
+
+
 interface FilterContextProps {
   categories: Category[];
   priceRange: [number, number];
   availability: string[];
   sortBy: string;
   page: number;
-  products: [];
+  products: Product[];
   order: string;
+  limit: number;
   selectedCategories: string[];
   setCategories: (categories: Category[]) => void;
   setPriceRange: (range: [number, number]) => void;
@@ -28,7 +44,7 @@ const FilterContext = createContext<FilterContextProps | undefined>(undefined);
 
 export const FilterProvider = ({ children }: { children: ReactNode }) => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 14000]);
   const [availability, setAvailabilityState] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>('Most Popular');

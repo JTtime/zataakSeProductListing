@@ -8,6 +8,7 @@ const ProductListHeader = () => {
 
     const fetchSortedData = async () => {
         try {
+            //@ts-ignore
             const response = await EcommerceServices.getSortedProductsList(limit, page * limit, order)
             if (response?.status === 200) {
                 setProducts(response?.data?.products)

@@ -11,7 +11,7 @@ if (!uri) {
 const client = new MongoClient(uri);
 
 
-const applyPagination = (query, limit: number, skip: number) => {
+const applyPagination = (query: any, limit: number, skip: number) => {
   return query.limit(limit).skip(skip); 
 };
 
@@ -36,7 +36,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error(error);
     
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 });
   } finally {
     
     await client.close();
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error(error);
     
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 });
   } finally {
     
     await client.close();
