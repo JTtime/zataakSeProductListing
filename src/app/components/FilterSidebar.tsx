@@ -39,7 +39,7 @@ const FilterSidebar = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [debouncedPriceRange, setDebouncedPriceRange] = useState<[number, number]>([0, 14000]);
 
-  // Timer for debouncing
+
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
 
 
@@ -48,9 +48,6 @@ const FilterSidebar = () => {
     // fetchAllProducts();
   }, [])
 
-  useEffect(() => {
-    // setProducts(filteredProducts.slice((page - 1) * limit, ((page - 1) * limit) + limit))
-  }, [filteredProducts, page])
 
   const fetchProductByCategoryList = async () => {
     const skip = (page - 1) * limit
@@ -68,24 +65,6 @@ const FilterSidebar = () => {
     }
   }, [selectedCategories, page, availability, debouncedPriceRange])
 
-  useEffect(() => {
-
-
-  }, [availability])
-
-  const fetchProductsByAvailability = async () => {
-
-  }
-
-  // useEffect(() => {
-  //   // filterProducts(filteredProducts);
-  //   if (selectedCategories.length >= 1) {
-  //     fetchProductByCategory(selectedCategories[selectedCategories?.length - 1]);
-  //   }
-
-  //   console.log('selected categories', selectedCategories)
-  //   console.log('products List', products, filteredProducts)
-  // }, [selectedCategories])
 
   const fetchCategories = async () => {
     try {
@@ -179,7 +158,6 @@ const FilterSidebar = () => {
       }
       else {
         // fetchProductByCategory(slug)
-
         return ([...prevCategories, slug])
       }
     }
@@ -189,23 +167,23 @@ const FilterSidebar = () => {
 
   const handleSliderChange = (e: Event, newValue: [number, number]) => {
     if (debounceTimeout) {
-      clearTimeout(debounceTimeout); // Clear the previous timeout if any
+      clearTimeout(debounceTimeout);
     }
 
-    // Set a new debounce timeout
+    
     const timeout = setTimeout(() => {
-      setDebouncedPriceRange(newValue); // Update the debounced value after 1000ms
+      setDebouncedPriceRange(newValue); 
     }, 1000);
 
-    setDebounceTimeout(timeout); // Store the timeout reference
-    setPriceRange(newValue); // Update the slider value immediately
+    setDebounceTimeout(timeout); 
+    setPriceRange(newValue); 
   };
 
   const handleResetSlider = () => {
     const defaultPriceRange: [number, number] = [0, 14000];
-    setPriceRange(defaultPriceRange); // Reset the slider value
-    setDebouncedPriceRange(defaultPriceRange); // Reset the debounced price range
-    setPage(1); // Optionally reset page to 1
+    setPriceRange(defaultPriceRange); 
+    setDebouncedPriceRange(defaultPriceRange); 
+    setPage(1);
   };
 
 
