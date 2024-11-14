@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URI || "mongodb+srv://jeevrajvjti:AYv4AeAsrGAfIwxv@cluster0.e15ft.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 if (!uri) {
   throw new Error("MONGODB_URI is not defined in .env.local");
