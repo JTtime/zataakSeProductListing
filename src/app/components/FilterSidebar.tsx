@@ -52,7 +52,7 @@ const FilterSidebar = () => {
   const fetchProductByCategoryList = async () => {
     const skip = (page - 1) * limit
     try {
-      const response = await axios.post('/api/product/', { selectedCategories, limit, skip, availability, priceRange: debouncedPriceRange });
+      const response = await axios.post('https://productlistingzataaksebackend.onrender.com/api/products/', { selectedCategories, limit, skip, availability, priceRange: debouncedPriceRange });
       setProducts(response?.data?.products);
     } catch (error) {
       console.error('Error fetching products:', error);
